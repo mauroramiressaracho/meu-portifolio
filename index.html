@@ -483,7 +483,8 @@
         .hologram-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            object-position: center;
             border-radius: 20px;
             position: relative;
             z-index: 0;
@@ -619,7 +620,10 @@
         .project-image {
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            background-color: rgba(5, 5, 16, 0.6);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             position: relative;
             overflow: hidden;
         }
@@ -953,7 +957,7 @@
                 </div>
                 
                 <h1>Olá, eu sou <span>Mauro Ramires Saracho</span></h1>
-                <p>Engenheiro de Software Full-Stack e DevOps com mais de 15 anos de experiência. Transformo tecnologia, dados e automação em resultados reais.</p>
+                <p>Engenheiro de Software Full-Stack e DevOps com mais de 15 anos de experiência. Transformo tecnologia, dados e automação em resultados reais. Formado em Análise e Desenvolvimento de Sistemas e com duas pós-graduações: Inteligência Artificial e Gestão em Tecnologia.</p>
                 <a href="#contact" class="cta-button">Vamos Conectar</a>
             </div>
         </div>
@@ -1133,7 +1137,7 @@
             
             <div class="projects-container">
                 <div class="project-card">
-                    <div class="project-image"></div>
+                    <div class="project-image" style="background-image: url('images/card1.png');"></div>
                     <div class="project-content">
                         <h3>Sistema de Automação Corporativa</h3>
                         <p>Solução completa para automação de processos empresariais com integração de múltiplas plataformas.</p>
@@ -1146,7 +1150,7 @@
                 </div>
                 
                 <div class="project-card">
-                    <div class="project-image"></div>
+                    <div class="project-image" style="background-image: url('images/card2.png');"></div>
                     <div class="project-content">
                         <h3>Plataforma de Análise de Dados</h3>
                         <p>Dashboard interativo para análise de dados corporativos com visualizações em tempo real.</p>
@@ -1159,7 +1163,7 @@
                 </div>
                 
                 <div class="project-card">
-                    <div class="project-image"></div>
+                    <div class="project-image" style="background-image: url('images/card3.png');"></div>
                     <div class="project-content">
                         <h3>Sistema de Integração de APIs</h3>
                         <p>Arquitetura microserviços para integração de múltiplas APIs com alta disponibilidade.</p>
