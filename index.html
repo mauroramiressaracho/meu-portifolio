@@ -491,6 +491,116 @@
             display: block;
         }
 
+        /* Companies Section */
+        .companies-intro {
+            max-width: 760px;
+            margin: 0 auto 35px;
+            text-align: center;
+            color: var(--medium-text);
+            font-size: 1.05rem;
+        }
+
+        .companies-carousel {
+            position: relative;
+            overflow: hidden;
+            padding: 15px 0;
+            cursor: grab;
+            touch-action: pan-y;
+            user-select: none;
+        }
+
+        .companies-carousel.is-dragging {
+            cursor: grabbing;
+        }
+
+        .companies-carousel:before,
+        .companies-carousel:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 90px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .companies-carousel:before {
+            left: 0;
+            background: linear-gradient(90deg, var(--darker-bg), rgba(5, 5, 16, 0));
+        }
+
+        .companies-carousel:after {
+            right: 0;
+            background: linear-gradient(270deg, var(--darker-bg), rgba(5, 5, 16, 0));
+        }
+
+        .companies-track {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            width: max-content;
+            will-change: transform;
+        }
+
+        .companies-track.is-static {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .companies-group {
+            display: flex;
+            align-items: stretch;
+            gap: 24px;
+            flex-shrink: 0;
+        }
+
+        .company-card {
+            min-width: 340px;
+            min-height: 200px;
+            padding: 20px 24px;
+            background: rgba(10, 15, 35, 0.75);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all var(--transition-speed);
+        }
+
+        .company-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: var(--neon-glow);
+        }
+
+        .company-logo {
+            width: 100%;
+            max-width: 290px;
+            max-height: 140px;
+            object-fit: contain;
+            filter: none;
+            opacity: 1;
+            transition: transform 0.5s ease;
+        }
+
+        .company-card:hover .company-logo {
+            filter: none;
+            transform: scale(1.1);
+        }
+
+        .companies-empty {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 25px;
+            text-align: center;
+            color: var(--medium-text);
+            background: rgba(10, 15, 35, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.15);
+            border-radius: 18px;
+        }
+
         /* Skills Section */
         .skills-container {
             display: grid;
@@ -905,6 +1015,26 @@
             .project-card {
                 width: 100%;
             }
+
+            .companies-carousel:before,
+            .companies-carousel:after {
+                width: 48px;
+            }
+
+            .companies-group {
+                gap: 16px;
+            }
+
+            .company-card {
+                min-width: 260px;
+                min-height: 160px;
+                padding: 16px 18px;
+            }
+
+            .company-logo {
+                max-width: 220px;
+                max-height: 110px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -949,6 +1079,7 @@
             <ul class="nav-menu" id="nav-menu">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">Sobre</a></li>
+                <li><a href="#companies">Empresas</a></li>
                 <li><a href="#skills">Habilidades</a></li>
                 <li><a href="#services">Serviços</a></li>
                 <li><a href="#projects">Projetos</a></li>
@@ -1022,6 +1153,27 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Companies Section -->
+    <section id="companies">
+        <div class="container">
+            <div class="section-title">
+                <h2>Empresas que já desenvolvi</h2>
+            </div>
+
+            <p class="companies-intro">
+                Logos das empresas e marcas para as quais já entreguei sistemas, integrações, automações e soluções digitais.
+            </p>
+
+            <div class="companies-carousel" aria-label="Carrossel de empresas atendidas">
+                <div class="companies-track" id="companies-track"></div>
+            </div>
+
+            <p class="companies-empty" id="companies-empty" hidden>
+                Adicione os arquivos em <strong>images/empresas</strong> e atualize a lista no arquivo <strong>data/empresas.js</strong>.
+            </p>
         </div>
     </section>
 
@@ -1275,9 +1427,217 @@
         </div>
     </footer>
 
+    <script src="data/empresas.js"></script>
     <script>
         // Inicialização do jQuery
         $(document).ready(function() {
+            var companiesState = {
+                animationFrameId: null,
+                groupWidth: 0,
+                isDragging: false,
+                lastFrameTime: null,
+                offset: 0,
+                pointerStartX: 0,
+                startOffset: 0
+            };
+
+            function createCompanyCard(company) {
+                var card = $('<article class="company-card"></article>');
+
+                if (company.logo) {
+                    var image = $('<img class="company-logo" loading="lazy">')
+                        .attr('src', company.logo)
+                        .attr('alt', 'Logo da empresa ' + company.name)
+                        .on('error', function() {
+                            card.remove();
+                            updateCompaniesScrollWidth();
+                        });
+
+                    card.append(image);
+                }
+
+                return card;
+            }
+
+            function normalizeCompaniesOffset() {
+                if (!companiesState.groupWidth) {
+                    companiesState.offset = 0;
+                    return;
+                }
+
+                while (companiesState.offset <= -companiesState.groupWidth) {
+                    companiesState.offset += companiesState.groupWidth;
+                }
+
+                while (companiesState.offset > 0) {
+                    companiesState.offset -= companiesState.groupWidth;
+                }
+            }
+
+            function applyCompaniesTransform() {
+                var track = $('#companies-track');
+
+                if (track.hasClass('is-static')) {
+                    track.css('transform', 'translateX(0)');
+                    return;
+                }
+
+                track.css('transform', 'translateX(' + companiesState.offset + 'px)');
+            }
+
+            function updateCompaniesScrollWidth() {
+                var track = $('#companies-track');
+                var firstGroup = track.find('.companies-group').first();
+
+                if (!firstGroup.length || track.hasClass('is-static')) {
+                    companiesState.groupWidth = 0;
+                    companiesState.offset = 0;
+                    applyCompaniesTransform();
+                    return;
+                }
+
+                var trackGap = parseFloat(track.css('gap')) || 0;
+                companiesState.groupWidth = firstGroup.outerWidth() + trackGap;
+                normalizeCompaniesOffset();
+                applyCompaniesTransform();
+            }
+
+            function startCompaniesAnimation() {
+                if (companiesState.animationFrameId) {
+                    cancelAnimationFrame(companiesState.animationFrameId);
+                }
+
+                companiesState.lastFrameTime = null;
+
+                function step(timestamp) {
+                    if (companiesState.lastFrameTime === null) {
+                        companiesState.lastFrameTime = timestamp;
+                    }
+
+                    var elapsed = timestamp - companiesState.lastFrameTime;
+                    companiesState.lastFrameTime = timestamp;
+
+                    if (!companiesState.isDragging && companiesState.groupWidth) {
+                        companiesState.offset -= elapsed * 0.06;
+                        normalizeCompaniesOffset();
+                        applyCompaniesTransform();
+                    }
+
+                    companiesState.animationFrameId = requestAnimationFrame(step);
+                }
+
+                companiesState.animationFrameId = requestAnimationFrame(step);
+            }
+
+            function getPointerClientX(event) {
+                var originalEvent = event.originalEvent || event;
+
+                if (originalEvent.touches && originalEvent.touches.length) {
+                    return originalEvent.touches[0].clientX;
+                }
+
+                if (originalEvent.changedTouches && originalEvent.changedTouches.length) {
+                    return originalEvent.changedTouches[0].clientX;
+                }
+
+                return originalEvent.clientX;
+            }
+
+            function startCompaniesDrag(event) {
+                var carousel = $('.companies-carousel');
+                var track = $('#companies-track');
+
+                if (track.hasClass('is-static') || !companiesState.groupWidth) {
+                    return;
+                }
+
+                if (event.type === 'mousedown' && event.which !== 1) {
+                    return;
+                }
+
+                companiesState.isDragging = true;
+                companiesState.pointerStartX = getPointerClientX(event);
+                companiesState.startOffset = companiesState.offset;
+                companiesState.lastFrameTime = null;
+
+                carousel.addClass('is-dragging');
+
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
+            }
+
+            function moveCompaniesDrag(event) {
+                if (!companiesState.isDragging) {
+                    return;
+                }
+
+                var currentX = getPointerClientX(event);
+
+                if (typeof currentX !== 'number') {
+                    return;
+                }
+
+                companiesState.offset = companiesState.startOffset + (currentX - companiesState.pointerStartX);
+                normalizeCompaniesOffset();
+                applyCompaniesTransform();
+
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
+            }
+
+            function endCompaniesDrag() {
+                if (!companiesState.isDragging) {
+                    return;
+                }
+
+                companiesState.isDragging = false;
+                companiesState.lastFrameTime = null;
+                $('.companies-carousel').removeClass('is-dragging');
+            }
+
+            function renderCompaniesCarousel() {
+                var companies = Array.isArray(window.portfolioCompanies)
+                    ? window.portfolioCompanies.filter(function(company) {
+                        return company && company.logo;
+                    })
+                    : [];
+
+                var track = $('#companies-track');
+                var carousel = $('.companies-carousel');
+                var emptyState = $('#companies-empty');
+
+                track.empty().removeClass('is-static');
+
+                if (!companies.length) {
+                    carousel.hide();
+                    emptyState.removeAttr('hidden');
+                    return;
+                }
+
+                emptyState.attr('hidden', 'hidden');
+                carousel.show();
+
+                var firstGroup = $('<div class="companies-group"></div>');
+                companies.forEach(function(company) {
+                    firstGroup.append(createCompanyCard(company));
+                });
+                track.append(firstGroup);
+
+                if (companies.length > 1) {
+                    var secondGroup = $('<div class="companies-group" aria-hidden="true"></div>');
+                    companies.forEach(function(company) {
+                        secondGroup.append(createCompanyCard(company));
+                    });
+                    track.append(secondGroup);
+                } else {
+                    track.addClass('is-static');
+                }
+
+                updateCompaniesScrollWidth();
+            }
+
             // Efeito de cursor luminoso
             $(document).on('mousemove', function(e) {
                 $('.cursor-glow').css({
@@ -1324,6 +1684,14 @@
             // Inicializar barras de habilidade
             animateSkillBars();
             $(window).on('scroll', animateSkillBars);
+            $(window).on('resize', updateCompaniesScrollWidth);
+
+            renderCompaniesCarousel();
+            startCompaniesAnimation();
+
+            $('.companies-carousel').on('mousedown touchstart', startCompaniesDrag);
+            $(document).on('mousemove touchmove', moveCompaniesDrag);
+            $(document).on('mouseup touchend touchcancel', endCompaniesDrag);
             
             // Smooth scroll para links internos
             $('a[href^="#"]').on('click', function(e) {
