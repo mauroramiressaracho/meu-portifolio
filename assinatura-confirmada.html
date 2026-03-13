@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmação de Assinatura · Mauro Ramires</title>
+  <!-- Google Fonts: mesma tipografia do arquivo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- RESET E VARIÁVEIS (exatamente igual ao arquivo) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(145deg, #f9fafc 0%, #f1f4f9 100%);
+      color: #1a1f2e;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ----- TIPOGRAFIA ----- */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 8vw, 3.5rem);
+      line-height: 1.1;
+      background: linear-gradient(to right, #1e293b, #2d3b50);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    /* ----- BOTÕES (mesmos estilos do arquivo) ----- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      background: white;
+      color: #1e293b;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+      border: 1px solid rgba(0,0,0,0.02);
+    }
+
+    .btn-primary {
+      background: #1e293b;
+      color: white;
+      box-shadow: 0 8px 20px -8px rgba(30,41,59,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .btn-primary:hover {
+      background: #2d3b50;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -8px rgba(30,41,59,0.4);
+    }
+
+    .btn-outline-light {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .btn-outline-light:hover {
+      background: white;
+      transform: scale(1.02);
+      box-shadow: 0 12px 24px -12px rgba(0,0,0,0.2);
+    }
+
+    /* ----- BOTÃO WHATSAPP (igual ao do arquivo) ----- */
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 18px 45px;
+      border-radius: 60px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 20px 25px -10px #25D36680;
+      text-decoration: none;
+    }
+
+    .btn-whatsapp:hover {
+      background: #20b859;
+      transform: scale(1.03);
+      box-shadow: 0 25px 30px -8px #25D366;
+    }
+
+    /* ----- CARD DE CONFIRMAÇÃO (usando os mesmos estilos dos cards do arquivo) ----- */
+    .confirmation-card {
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 48px;
+      padding: 60px 40px;
+      box-shadow: 0 20px 35px -15px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.01);
+      transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.4s;
+      text-align: center;
+      animation: fadeUp 0.8s ease-out forwards;
+    }
+
+    .confirmation-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 30px 45px -15px rgba(59,130,246,0.2), 0 0 0 1px rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.85);
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      background: linear-gradient(130deg, #22c55e, #16a34a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+
+    .confirmation-card h2 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      background: linear-gradient(130deg, #1e293b, #334155);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .confirmation-subtitle {
+      font-size: 1.3rem;
+      color: #475569;
+      margin-bottom: 30px;
+    }
+
+    .message-box {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(4px);
+      border-radius: 28px;
+      padding: 32px 24px;
+      border: 1px solid rgba(255,255,255,0.8);
+      margin: 30px 0;
+      color: #1e293b;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .message-box p {
+      margin-bottom: 10px;
+    }
+
+    .message-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .help-section {
+      margin-top: 30px;
+      padding-top: 20px;
+    }
+
+    .help-section p {
+      color: #475569;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    .phone-number {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-top: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.2s;
+      padding: 8px 16px;
+      border-radius: 40px;
+    }
+
+    .back-link:hover {
+      background: rgba(255,255,255,0.5);
+      transform: translateX(-5px);
+    }
+
+    .back-link i {
+      font-size: 0.8rem;
+      margin-right: 5px;
+    }
+
+    /* ANIMAÇÃO (mesma do arquivo) */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* responsividade */
+    @media (max-width: 640px) {
+      .confirmation-card {
+        padding: 40px 20px;
+        border-radius: 32px;
+      }
+      
+      .confirmation-card h2 {
+        font-size: 2rem;
+      }
+      
+      .confirmation-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .btn-whatsapp {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+      }
+      
+      .phone-number {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- CARD DE CONFIRMAÇÃO ÚNICO E EXCLUSIVO -->
+    <div class="confirmation-card">
+      <!-- Ícone de sucesso -->
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      
+      <!-- Título principal -->
+      <h2>Assinatura realizada<br>com sucesso!</h2>
+      
+      <!-- Subtítulo -->
+      <div class="confirmation-subtitle">
+        Seu pagamento foi aprovado.
+      </div>
+
+      <!-- Mensagem de confirmação (estilo igual aos cards de benefício do arquivo) -->
+      <div class="message-box">
+        <p><i class="fas fa-envelope" style="color: #3b82f6; margin-right: 8px;"></i> Em breve entraremos em contato para ativar seu acesso ao sistema ou serviço contratado.</p>
+        <p style="font-size: 0.95rem; color: #64748b; margin-top: 15px;">Fique atento ao seu e-mail e WhatsApp. Enviaremos todas as instruções de acesso em até 24 horas úteis.</p>
+      </div>
+
+      <!-- Seção de ajuda (exatamente igual ao estilo do suporte do arquivo) -->
+      <div class="help-section">
+        <p><i class="fas fa-headset" style="color: #3b82f6;"></i> <strong>Se precisar de ajuda:</strong></p>
+        
+        <a href="https://wa.me/5567992886513?text=Olá! Acabei de realizar uma assinatura e gostaria de saber mais sobre a ativação do meu acesso." 
+           target="_blank" 
+           class="btn-whatsapp">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        
+        <div class="phone-number">
+          <i class="fas fa-phone-alt" style="color: #25D366; font-size: 1rem;"></i> (67) 99288-6513
+        </div>
+        
+        <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 10px;">
+          <i class="fas fa-clock"></i> Atendimento de seg a sex, 9h às 18h
+        </p>
+      </div>
+
+      <!-- Link para voltar (estilo do rodapé do arquivo) -->
+      <a href="assinaturas.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Voltar para a Central de Assinaturas
+      </a>
+    </div>
+  </div>
+</body>
+</html>
