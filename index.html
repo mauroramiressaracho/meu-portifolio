@@ -1,1809 +1,315 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mauro Ramires Saracho | Desenvolvedor Full-Stack & DevOps</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <style>
-        :root {
-            --primary: #00f3ff;
-            --primary-dark: #0066cc;
-            --secondary: #9d00ff;
-            --secondary-dark: #5a00b3;
-            --accent: #ff00aa;
-            --dark-bg: #0a0a16;
-            --darker-bg: #050510;
-            --light-text: #f0f8ff;
-            --medium-text: #a0a8ff;
-            --card-bg: rgba(10, 15, 35, 0.7);
-            --card-border: rgba(0, 243, 255, 0.2);
-            --neon-glow: 0 0 15px var(--primary), 0 0 30px var(--primary), 0 0 45px var(--primary);
-            --neon-glow-secondary: 0 0 15px var(--secondary), 0 0 30px var(--secondary), 0 0 45px var(--secondary);
-            --transition-speed: 0.4s;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Exo 2', sans-serif;
-            background-color: var(--darker-bg);
-            color: var(--light-text);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Efeito de partículas */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            top: 0;
-            left: 0;
-        }
-
-        /* Cursor glow effect */
-        .cursor-glow {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 243, 255, 0.1) 0%, rgba(0, 243, 255, 0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            mix-blend-mode: screen;
-            transition: transform 0.1s ease;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 20px 0;
-            background: rgba(5, 5, 16, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
-            transition: all var(--transition-speed);
-        }
-
-        header.scrolled {
-            padding: 15px 0;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--light-text);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo span {
-            color: var(--primary);
-            text-shadow: var(--neon-glow);
-        }
-
-        .logo i {
-            margin-right: 10px;
-            color: var(--primary);
-            animation: pulse 2s infinite;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-menu li {
-            margin-left: 30px;
-        }
-
-        .nav-menu a {
-            color: var(--light-text);
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 500;
-            font-size: 1rem;
-            position: relative;
-            padding: 5px 0;
-            transition: all var(--transition-speed);
-        }
-
-        .nav-menu a:before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width var(--transition-speed);
-            box-shadow: var(--neon-glow);
-        }
-
-        .nav-menu a:hover {
-            color: var(--primary);
-            text-shadow: var(--neon-glow);
-        }
-
-        .nav-menu a:hover:before {
-            width: 100%;
-        }
-
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        /* Seções Gerais */
-        section {
-            padding: 120px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 70px;
-            position: relative;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            display: inline-block;
-            position: relative;
-            padding-bottom: 15px;
-        }
-
-        .section-title h2:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            box-shadow: var(--neon-glow);
-        }
-
-        /* Home Section */
-        #home {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            padding-top: 140px;
-        }
-
-        .home-content {
-            max-width: 900px;
-            z-index: 1;
-        }
-
-        /* Círculo da foto */
-        .photo-container {
-            position: relative;
-            width: 250px;
-            height: 250px;
-            margin: 30px auto 40px;
-        }
-
-        .photo-circle {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            position: relative;
-            border: 3px solid transparent;
-            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent)) border-box;
-            box-shadow: var(--neon-glow);
-        }
-
-        .photo-circle-inner {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            right: 3px;
-            bottom: 3px;
-            background-color: var(--darker-bg);
-            z-index: 1;
-        }
-
-        .profile-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            border-radius: 50%;
-            transition: all 0.5s ease;
-        }
-
-        .photo-circle:hover .profile-photo {
-            transform: scale(1.05);
-            filter: brightness(1.2) contrast(1.1);
-        }
-
-        .photo-glow {
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, rgba(0, 243, 255, 0) 70%);
-            z-index: 0;
-            animation: pulse-glow 3s infinite alternate;
-        }
-
-        .photo-orbits {
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            border-radius: 50%;
-        }
-
-        .orbit {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        .orbit:nth-child(1) {
-        }
-
-        .orbit:nth-child(2) {
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border-color: rgba(157, 0, 255, 0.3);
-        }
-
-        .orbit:nth-child(3) {
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            border-color: rgba(255, 0, 170, 0.3);
-        }
-
-        .home-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-        }
-
-        .home-content h1 span {
-            color: var(--primary);
-            text-shadow: var(--neon-glow);
-        }
-
-        .home-content p {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            color: var(--medium-text);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 40px;
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            border-radius: 30px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all var(--transition-speed);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-        }
-
-        .cta-button:hover {
-            background: rgba(0, 243, 255, 0.1);
-            box-shadow: var(--neon-glow);
-            transform: translateY(-5px) scale(1.05);
-            color: white;
-        }
-
-        .cta-button:active {
-            transform: translateY(0) scale(1);
-        }
-
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        .floating-element {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: transparent;
-            border: 1px solid var(--primary);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-        }
-
-        .floating-element:nth-child(2) {
-            top: 20%;
-            left: 10%;
-            width: 30px;
-            height: 30px;
-            border-color: var(--secondary);
-            animation-duration: 20s;
-        }
-
-        .floating-element:nth-child(3) {
-            top: 60%;
-            left: 80%;
-            width: 25px;
-            height: 25px;
-            border-color: var(--accent);
-            animation-duration: 18s;
-        }
-
-        .floating-element:nth-child(4) {
-            top: 80%;
-            left: 20%;
-            width: 15px;
-            height: 15px;
-            animation-duration: 12s;
-        }
-
-        /* About Section */
-        .about-content {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 50px;
-        }
-
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .about-text p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        .tech-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            margin: 5px 10px 5px 0;
-            background: rgba(0, 243, 255, 0.1);
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            border-radius: 20px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            transition: all var(--transition-speed);
-        }
-
-        .tech-badge:hover {
-            background: rgba(0, 243, 255, 0.2);
-            box-shadow: 0 0 10px var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .about-visual {
-            flex: 1;
-            min-width: 300px;
-            position: relative;
-        }
-
-        .hologram {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 413 / 256;
-            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1) 0%, rgba(157, 0, 255, 0.1) 100%);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                inset 0 0 20px rgba(0, 243, 255, 0.2),
-                0 0 40px rgba(0, 243, 255, 0.1);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-        }
-
-        .hologram:before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(0, 243, 255, 0.1) 50%, transparent 70%);
-            animation: hologram-scan 8s infinite linear;
-            z-index: 1;
-        }
-
-        .hologram-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: center;
-            border-radius: 20px;
-            position: relative;
-            z-index: 0;
-            display: block;
-        }
-
-        /* Companies Section */
-        .companies-intro {
-            max-width: 760px;
-            margin: 0 auto 35px;
-            text-align: center;
-            color: var(--medium-text);
-            font-size: 1.05rem;
-        }
-
-        .companies-carousel {
-            position: relative;
-            overflow: hidden;
-            padding: 15px 0;
-            cursor: grab;
-            touch-action: pan-y;
-            user-select: none;
-        }
-
-        .companies-carousel.is-dragging {
-            cursor: grabbing;
-        }
-
-        .companies-carousel:before,
-        .companies-carousel:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 90px;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .companies-carousel:before {
-            left: 0;
-            background: linear-gradient(90deg, var(--darker-bg), rgba(5, 5, 16, 0));
-        }
-
-        .companies-carousel:after {
-            right: 0;
-            background: linear-gradient(270deg, var(--darker-bg), rgba(5, 5, 16, 0));
-        }
-
-        .companies-track {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            width: max-content;
-            will-change: transform;
-        }
-
-        .companies-track.is-static {
-            width: 100%;
-            justify-content: center;
-        }
-
-        .companies-group {
-            display: flex;
-            align-items: stretch;
-            gap: 24px;
-            flex-shrink: 0;
-        }
-
-        .company-card {
-            min-width: 340px;
-            min-height: 200px;
-            padding: 20px 24px;
-            background: rgba(10, 15, 35, 0.75);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all var(--transition-speed);
-        }
-
-        .company-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--primary);
-            box-shadow: var(--neon-glow);
-        }
-
-        .company-logo {
-            width: 100%;
-            max-width: 290px;
-            max-height: 140px;
-            object-fit: contain;
-            filter: none;
-            opacity: 1;
-            transition: transform 0.5s ease;
-        }
-
-        .company-card:hover .company-logo {
-            filter: none;
-            transform: scale(1.1);
-        }
-
-        .companies-empty {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 25px;
-            text-align: center;
-            color: var(--medium-text);
-            background: rgba(10, 15, 35, 0.6);
-            border: 1px solid rgba(0, 243, 255, 0.15);
-            border-radius: 18px;
-        }
-
-        /* Skills Section */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .skill-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 15px;
-            padding: 30px;
-            transition: all var(--transition-speed);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: var(--neon-glow);
-            border-color: var(--primary);
-        }
-
-        .skill-card i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .skill-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-        }
-
-        .skill-level {
-            height: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
-
-        .skill-level-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 5px;
-            width: 0;
-            transition: width 1.5s ease-in-out;
-        }
-
-        /* Services Section */
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 15px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: all var(--transition-speed);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px) rotateX(5deg);
-            box-shadow: var(--neon-glow);
-        }
-
-        .service-card:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .service-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 25px;
-            background: rgba(0, 243, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--primary);
-            transition: all var(--transition-speed);
-        }
-
-        .service-card:hover .service-icon {
-            transform: rotateY(180deg) scale(1.2);
-            box-shadow: var(--neon-glow);
-        }
-
-        /* Projects Section */
-        .projects-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .project-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all var(--transition-speed);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: var(--neon-glow);
-        }
-
-        .project-image {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background-color: rgba(5, 5, 16, 0.6);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .project-tag {
-            padding: 5px 10px;
-            background: rgba(0, 243, 255, 0.1);
-            border-radius: 15px;
-            font-size: 0.8rem;
-            border: 1px solid rgba(0, 243, 255, 0.3);
-        }
-
-        /* Contact Section */
-        .contact-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px;
-        }
-
-        .contact-form {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 15px;
-            padding: 40px;
-            backdrop-filter: blur(10px);
-        }
-
-        .contact-cta {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            border-radius: 8px;
-            color: var(--light-text);
-            font-family: 'Exo 2', sans-serif;
-            font-size: 1rem;
-            transition: all var(--transition-speed);
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: transparent;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            color: var(--primary);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all var(--transition-speed);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            background: rgba(0, 243, 255, 0.1);
-            box-shadow: var(--neon-glow);
-            transform: translateY(-3px);
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .contact-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 243, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            font-size: 1.5rem;
-            color: var(--primary);
-            transition: all var(--transition-speed);
-        }
-
-        .contact-item:hover .contact-icon {
-            transform: rotate(20deg) scale(1.2);
-            box-shadow: var(--neon-glow);
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(5, 5, 16, 0.9);
-            border-top: 1px solid rgba(0, 243, 255, 0.2);
-            padding: 40px 0 20px;
-            text-align: center;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .social-link {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(0, 243, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 1.3rem;
-            transition: all var(--transition-speed);
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px) rotate(15deg);
-            box-shadow: var(--neon-glow);
-            background: rgba(0, 243, 255, 0.2);
-        }
-
-        .copyright {
-            color: var(--medium-text);
-            font-size: 0.9rem;
-        }
-
-        /* Animações */
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-            100% { transform: translateY(0) rotate(360deg); }
-        }
-
-        @keyframes hologram-scan {
-            0% { transform: rotate(0deg) translateX(-30%); }
-            100% { transform: rotate(360deg) translateX(-30%); }
-        }
-
-        @keyframes rotate-gradient {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse-glow {
-            0% { opacity: 0.5; transform: scale(1); }
-            100% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        @keyframes orbit-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Responsividade */
-        @media (max-width: 992px) {
-            .home-content h1 {
-                font-size: 2.8rem;
-            }
-            
-            .photo-container {
-                width: 220px;
-                height: 220px;
-            }
-            
-            .nav-menu {
-                position: fixed;
-                top: 80px;
-                right: -100%;
-                flex-direction: column;
-                background: rgba(5, 5, 16, 0.95);
-                width: 100%;
-                text-align: center;
-                transition: 0.5s;
-                padding: 20px 0;
-                backdrop-filter: blur(10px);
-                border-top: 1px solid rgba(0, 243, 255, 0.2);
-                z-index: 999;
-            }
-
-            .nav-menu.active {
-                right: 0;
-            }
-
-            .nav-menu li {
-                margin: 15px 0;
-            }
-
-            .hamburger {
-                display: block;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .home-content h1 {
-                font-size: 2.3rem;
-            }
-            
-            .photo-container {
-                width: 200px;
-                height: 200px;
-            }
-            
-            .home-content p {
-                font-size: 1.1rem;
-            }
-            
-            section {
-                padding: 80px 0;
-            }
-            
-            .section-title {
-                margin-bottom: 50px;
-            }
-
-            .projects-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .project-card {
-                width: 100%;
-            }
-
-            .companies-carousel:before,
-            .companies-carousel:after {
-                width: 48px;
-            }
-
-            .companies-group {
-                gap: 16px;
-            }
-
-            .company-card {
-                min-width: 260px;
-                min-height: 160px;
-                padding: 16px 18px;
-            }
-
-            .company-logo {
-                max-width: 220px;
-                max-height: 110px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .home-content h1 {
-                font-size: 2rem;
-            }
-            
-            .photo-container {
-                width: 180px;
-                height: 180px;
-            }
-            
-            .cta-button {
-                padding: 12px 30px;
-                font-size: 1rem;
-            }
-            
-            .container {
-                padding: 0 15px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mauro Ramires — Consultoria em tecnologia, automação, dados e inteligência artificial aplicada a problemas reais de negócio." />
+  <title>Mauro Ramires | Tecnologia para resolver problemas de negócio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg-2:#0b1727;
+      --surface:#0f1d30;
+      --surface-2:#13243a;
+      --text:#f4f7fb;
+      --muted:#a6b3c5;
+      --line:rgba(255,255,255,.10);
+      --blue:#2d8cff;
+      --blue-2:#68b5ff;
+      --green:#35d0a1;
+      --shadow:0 20px 60px rgba(0,0,0,.28);
+      --radius:24px;
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 80% 0%,rgba(45,140,255,.15),transparent 34%),
+        radial-gradient(circle at 10% 22%,rgba(53,208,161,.08),transparent 25%),
+        var(--bg);
+      line-height:1.65;
+    }
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .container{width:min(var(--max),calc(100% - 40px));margin:0 auto}
+
+    header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(16px);
+      background:rgba(7,17,31,.78);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{font-family:'Manrope',sans-serif;font-weight:800;font-size:1.18rem;letter-spacing:-.03em}
+    .brand span{color:var(--blue-2)}
+    .nav-links{display:flex;align-items:center;gap:24px;color:var(--muted);font-size:.94rem;font-weight:600}
+    .nav-links a:hover{color:white}
+    .nav-cta{padding:11px 17px;border:1px solid rgba(104,181,255,.35);border-radius:12px;color:white!important;background:rgba(45,140,255,.10)}
+
+    .hero{padding:92px 0 72px;min-height:calc(100vh - 76px);display:flex;align-items:center}
+    .hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:70px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border-radius:999px;border:1px solid rgba(104,181,255,.26);background:rgba(45,140,255,.08);color:#cfe7ff;font-size:.84rem;font-weight:700;margin-bottom:22px}
+    .eyebrow:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(53,208,161,.10)}
+    h1,h2,h3{font-family:'Manrope',sans-serif;letter-spacing:-.045em;line-height:1.08}
+    h1{font-size:clamp(3rem,6vw,5.6rem);max-width:900px;margin-bottom:24px}
+    h1 .accent{color:var(--blue-2)}
+    .hero-copy{font-size:1.2rem;color:var(--muted);max-width:720px;margin-bottom:34px}
+    .hero-copy strong{color:white}
+    .actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:36px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 20px;border-radius:14px;font-weight:800;transition:.2s ease}
+    .btn-primary{background:linear-gradient(135deg,var(--blue),#176fd2);color:white;box-shadow:0 14px 35px rgba(45,140,255,.24)}
+    .btn-primary:hover{transform:translateY(-2px)}
+    .btn-secondary{border:1px solid var(--line);background:rgba(255,255,255,.03);color:#dce6f3}
+    .btn-secondary:hover{background:rgba(255,255,255,.07)}
+    .hero-proof{display:flex;flex-wrap:wrap;gap:18px;color:#cad4df;font-size:.9rem}
+    .hero-proof span{display:flex;align-items:center;gap:8px}
+    .hero-proof span:before{content:'✓';color:var(--green);font-weight:900}
+
+    .visual{position:relative}
+    .portrait-card{position:relative;border:1px solid var(--line);border-radius:32px;overflow:hidden;background:linear-gradient(160deg,#10233b,#09121f);box-shadow:var(--shadow)}
+    .portrait-card img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center}
+    .portrait-card:after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(7,17,31,.88) 0%,transparent 48%)}
+    .portrait-caption{position:absolute;left:24px;right:24px;bottom:24px;z-index:2}
+    .portrait-caption strong{display:block;font-size:1.15rem;margin-bottom:4px}
+    .portrait-caption span{color:#c1ccda;font-size:.92rem}
+    .floating-card{position:absolute;background:rgba(12,28,48,.94);border:1px solid rgba(104,181,255,.22);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);z-index:3;max-width:230px}
+    .floating-card.one{left:-28px;top:14%}
+    .floating-card.two{right:-22px;bottom:17%}
+    .floating-card small{color:var(--muted);display:block;margin-bottom:3px}
+    .floating-card strong{font-size:1rem}
+
+    section{padding:94px 0}
+    .section-kicker{color:var(--blue-2);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;margin-bottom:14px}
+    .section-title{font-size:clamp(2.25rem,4vw,3.7rem);max-width:800px;margin-bottom:20px}
+    .section-lead{color:var(--muted);font-size:1.08rem;max-width:760px;margin-bottom:48px}
+
+    .pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .pain-card,.solution-card,.case-card{background:linear-gradient(180deg,rgba(19,36,58,.92),rgba(10,24,41,.92));border:1px solid var(--line);border-radius:var(--radius);padding:28px}
+    .pain-card{display:flex;gap:18px;align-items:flex-start}
+    .icon{width:48px;height:48px;border-radius:14px;background:rgba(45,140,255,.12);border:1px solid rgba(104,181,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex:0 0 auto}
+    .pain-card h3{font-size:1.12rem;margin-bottom:8px;letter-spacing:-.02em}
+    .pain-card p{color:var(--muted);font-size:.96rem}
+
+    .diagnostic{background:linear-gradient(135deg,rgba(45,140,255,.12),rgba(53,208,161,.05));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .diagnostic-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:68px;align-items:center}
+    .steps{display:grid;gap:14px}
+    .step{display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:start;padding:20px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.025)}
+    .step-number{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue);font-weight:800}
+    .step h3{font-size:1.03rem;margin-bottom:6px;letter-spacing:-.02em}
+    .step p{color:var(--muted);font-size:.94rem}
+
+    .solutions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .solution-card{min-height:255px;display:flex;flex-direction:column}
+    .solution-card .number{color:var(--blue-2);font-size:.78rem;font-weight:800;letter-spacing:.12em;margin-bottom:30px}
+    .solution-card h3{font-size:1.25rem;margin-bottom:12px;letter-spacing:-.025em}
+    .solution-card p{color:var(--muted);font-size:.94rem;margin-bottom:20px}
+    .solution-card .result{margin-top:auto;color:#dce8f5;font-weight:700;font-size:.88rem}
+
+    .cases{background:#081321;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .case-card .label{display:inline-block;padding:6px 9px;border-radius:8px;background:rgba(53,208,161,.10);color:#85e5c6;font-weight:800;font-size:.75rem;margin-bottom:18px}
+    .case-card h3{font-size:1.22rem;margin-bottom:14px;letter-spacing:-.025em}
+    .case-card p{color:var(--muted);font-size:.94rem;margin-bottom:18px}
+    .case-card ul{list-style:none;display:grid;gap:9px;color:#d6dfeb;font-size:.9rem}
+    .case-card li:before{content:'→';color:var(--blue-2);margin-right:8px}
+
+    .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:68px;align-items:center}
+    .about-photo{border-radius:28px;overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow)}
+    .about-photo img{aspect-ratio:1/1;object-fit:cover;width:100%}
+    .about-copy p{color:var(--muted);font-size:1.02rem;margin-bottom:17px}
+    .about-copy strong{color:white}
+    .skills{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+    .skills span{padding:8px 11px;border:1px solid var(--line);border-radius:999px;color:#c7d3e1;font-size:.82rem;background:rgba(255,255,255,.025)}
+
+    .cta-section{padding:100px 0}
+    .cta-box{padding:58px;border-radius:32px;background:linear-gradient(135deg,#0d2850,#0c1b30 58%,#0c2f2c);border:1px solid rgba(104,181,255,.20);box-shadow:var(--shadow);text-align:center}
+    .cta-box h2{font-size:clamp(2.2rem,4vw,3.8rem);max-width:860px;margin:0 auto 18px}
+    .cta-box p{color:#c5d0dd;max-width:720px;margin:0 auto 30px;font-size:1.08rem}
+
+    footer{padding:32px 0 44px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+    .footer-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .socials{display:flex;gap:18px}
+    .socials a:hover{color:white}
+
+    @media(max-width:980px){
+      .nav-links a:not(.nav-cta){display:none}
+      .hero-grid,.diagnostic-grid,.about-grid{grid-template-columns:1fr}
+      .visual{max-width:620px;margin:0 auto;width:100%}
+      .hero{text-align:left;padding-top:60px}
+      .solutions-grid{grid-template-columns:repeat(2,1fr)}
+      .cases-grid{grid-template-columns:1fr}
+      .floating-card.one{left:12px}.floating-card.two{right:12px}
+    }
+    @media(max-width:680px){
+      .container{width:min(100% - 28px,var(--max))}
+      .nav{height:68px}
+      .brand{font-size:1rem}.nav-cta{font-size:.83rem;padding:9px 12px}
+      .hero{padding:48px 0 54px;min-height:auto}
+      h1{font-size:2.7rem}
+      .hero-copy{font-size:1.05rem}
+      section{padding:70px 0}
+      .pain-grid,.solutions-grid{grid-template-columns:1fr}
+      .pain-card{padding:22px}.solution-card{min-height:auto}
+      .floating-card{position:static;margin-top:10px;max-width:none}
+      .cta-box{padding:36px 22px}
+      .portrait-card{border-radius:24px}
+    }
+  </style>
 </head>
 <body>
-    <!-- Efeito de partículas -->
-    <div id="particles-js"></div>
-    
-    <!-- Efeito de cursor luminoso -->
-    <div class="cursor-glow"></div>
-    
-    <!-- Header -->
-    <header id="header">
-        <div class="container nav-container">
-            <a href="#home" class="logo">
-                <i class="fas fa-code"></i>Mauro<span>Ramires</span>
-            </a>
-            
-            <div class="hamburger" id="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
-            
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">Sobre</a></li>
-                <li><a href="#companies">Empresas</a></li>
-                <li><a href="#skills">Habilidades</a></li>
-                <li><a href="#services">Serviços</a></li>
-                <li><a href="assinaturas.html">Planos</a></li>
-                <li><a href="#projects">Projetos</a></li>
-                <li><a href="#contact">Contato</a></li>
-            </ul>
+<header>
+  <div class="container nav">
+    <a href="#inicio" class="brand">MAURO <span>RAMIRES</span></a>
+    <nav class="nav-links">
+      <a href="#problemas">Problemas</a>
+      <a href="#como-trabalho">Como trabalho</a>
+      <a href="#solucoes">Soluções</a>
+      <a href="#sobre">Sobre</a>
+      <a class="nav-cta" href="#contato">Conversar sobre um problema</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Tecnologia aplicada a negócios</div>
+        <h1>Seu problema vem <span class="accent">antes da tecnologia.</span></h1>
+        <p class="hero-copy">Eu ajudo empresas a identificar <strong>retrabalho, processos manuais, dados dispersos e gargalos operacionais</strong> e transformo esses problemas em soluções com automação, dados, sistemas e inteligência artificial.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#contato">Quero analisar um problema →</a>
+          <a class="btn btn-secondary" href="#como-trabalho">Entenda como eu trabalho</a>
         </div>
-    </header>
-
-    <!-- Home Section -->
-    <section id="home">
-        <div class="container">
-            <div class="home-content">
-                <!-- Círculo com foto -->
-                <div class="photo-container">
-                    <div class="photo-glow"></div>
-                    <div class="photo-orbits">
-                        <div class="orbit"></div>
-                        <div class="orbit"></div>
-                        <div class="orbit"></div>
-                    </div>
-                    <div class="photo-circle">
-                        <div class="photo-circle-inner">
-                            <!-- Substitua a URL abaixo pela sua foto -->
-                            <img src="images/foto.jpeg" alt="Mauro Ramires Saracho" class="profile-photo">
-                        </div>
-                    </div>
-                </div>
-                
-                <h1>Olá, eu sou <span>Mauro Ramires Saracho</span></h1>
-                <p>Desenvolvedor de Software Sênior, Full-Stack e Especialista em DevOps com mais de 15 anos de experiência. Transformo tecnologia, dados e automação em resultados reais. Formado em Análise e Desenvolvimento de Sistemas e com duas pós-graduações: Inteligência Artificial e Gestão em Tecnologia.</p>
-                <a href="#contact" class="cta-button">Contato</a>
-            </div>
+        <div class="hero-proof">
+          <span>Problema primeiro</span>
+          <span>Solução sob medida</span>
+          <span>Foco em resultado</span>
         </div>
-        
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+      </div>
+      <div class="visual">
+        <div class="portrait-card">
+          <img src="images/foto.jpeg" alt="Mauro Ramires" />
+          <div class="portrait-caption">
+            <strong>Mauro Ramires</strong>
+            <span>Consultoria em tecnologia, automação e dados</span>
+          </div>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>Sobre Mim</h2>
-            </div>
-            
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Profissional com mais de 15 anos de experiência em desenvolvimento de sistemas, APIs, integrações, automações, bots, dashboards e soluções tecnológicas corporativas.</p>
-                    <p>Especialista em transformar desafios complexos em soluções eficientes e escaláveis, sempre com foco em qualidade, performance e entrega de valor.</p>
-                    <p>Atuo com tecnologias de ponta como Oracle, SQL Server, Python, JavaScript, Qlik Sense, APIs REST, automação e DevOps para criar soluções que impulsionam negócios.</p>
-                    
-                    <div class="tech-badges">
-                        <span class="tech-badge">Oracle</span>
-                        <span class="tech-badge">SQL Server</span>
-                        <span class="tech-badge">Python</span>
-                        <span class="tech-badge">JavaScript</span>
-                        <span class="tech-badge">APIs REST</span>
-                        <span class="tech-badge">Qlik Sense</span>
-                        <span class="tech-badge">DevOps</span>
-                        <span class="tech-badge">Automação</span>
-                    </div>
-                </div>
-                
-                <div class="about-visual">
-                    <div class="hologram">
-                        <img src="images/painel.png" alt="Painel de dados" class="hologram-image">
-                    </div>
-                </div>
-            </div>
+        <div class="floating-card one">
+          <small>O que eu procuro</small>
+          <strong>Onde a empresa perde tempo e dinheiro</strong>
         </div>
-    </section>
-
-    <!-- Companies Section -->
-    <section id="companies">
-        <div class="container">
-            <div class="section-title">
-                <h2>Empresas que já desenvolvi</h2>
-            </div>
-
-            <p class="companies-intro">
-                Logos das empresas e marcas para as quais já entreguei sistemas, integrações, automações e soluções digitais.
-            </p>
-
-            <div class="companies-carousel" aria-label="Carrossel de empresas atendidas">
-                <div class="companies-track" id="companies-track"></div>
-            </div>
-
-            <p class="companies-empty" id="companies-empty" hidden>
-                Adicione os arquivos em <strong>images/empresas</strong> e atualize a lista no arquivo <strong>data/empresas.js</strong>.
-            </p>
+        <div class="floating-card two">
+          <small>O objetivo</small>
+          <strong>Tecnologia que gera resultado</strong>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="container">
-            <div class="section-title">
-                <h2>Habilidades</h2>
-            </div>
-            
-            <div class="skills-container">
-                <div class="skill-card">
-                    <i class="fab fa-python"></i>
-                    <h3>Python</h3>
-                    <p>Desenvolvimento de sistemas, automações, APIs e soluções de dados.</p>
-                    <div class="skill-level">
-                        <div class="skill-level-bar" data-level="95"></div>
-                    </div>
-                </div>
-                
-                <div class="skill-card">
-                    <i class="fab fa-node-js"></i>
-                    <h3>Node.js</h3>
-                    <p>APIs REST, microserviços e aplicações server-side escaláveis.</p>
-                    <div class="skill-level">
-                        <div class="skill-level-bar" data-level="90"></div>
-                    </div>
-                </div>
-                
-                <div class="skill-card">
-                    <i class="fas fa-database"></i>
-                    <h3>Oracle & SQL Server</h3>
-                    <p>Modelagem, otimização e administração de bancos de dados.</p>
-                    <div class="skill-level">
-                        <div class="skill-level-bar" data-level="92"></div>
-                    </div>
-                </div>
-                
-                <div class="skill-card">
-                    <i class="fas fa-cloud"></i>
-                    <h3>DevOps</h3>
-                    <p>CI/CD, containerização, orquestração e infraestrutura como código.</p>
-                    <div class="skill-level">
-                        <div class="skill-level-bar" data-level="88"></div>
-                    </div>
-                </div>
-                
-                <div class="skill-card">
-                    <i class="fas fa-robot"></i>
-                    <h3>Automação & Bots</h3>
-                    <p>Automação de processos, RPA e criação de bots inteligentes.</p>
-                    <div class="skill-level">
-                        <div class="skill-level-bar" data-level="93"></div>
-                    </div>
-                </div>
-                
-                <div class="skill-card">
-                    <i class="fas fa-chart-bar"></i>
-                    <h3>Qlik Sense & Dashboards</h3>
-                    <p>Análise de dados, visualização e criação de dashboards interativos.</p>
-                    <div class="skill-level">
-                        <div class="skill-level-bar" data-level="85"></div>
-                    </div>
-                </div>
-            </div>
+  <section id="problemas">
+    <div class="container">
+      <div class="section-kicker">Antes de falar em sistema</div>
+      <h2 class="section-title">Isso acontece dentro da sua empresa?</h2>
+      <p class="section-lead">Muitas empresas já possuem sistemas, planilhas e dados. O problema é que o processo continua caro, manual e difícil de enxergar.</p>
+      <div class="pain-grid">
+        <article class="pain-card"><div class="icon">↻</div><div><h3>Retrabalho que virou rotina</h3><p>A mesma informação é digitada, conferida ou copiada várias vezes por pessoas diferentes.</p></div></article>
+        <article class="pain-card"><div class="icon">▦</div><div><h3>Planilhas que controlam tudo</h3><p>Dados importantes dependem de arquivos espalhados, versões diferentes e conferências manuais.</p></div></article>
+        <article class="pain-card"><div class="icon">⏱</div><div><h3>Relatórios que demoram demais</h3><p>A equipe perde horas preparando informações que deveriam estar disponíveis em minutos.</p></div></article>
+        <article class="pain-card"><div class="icon">↔</div><div><h3>Sistemas que não conversam</h3><p>Informações existem, mas estão isoladas em ferramentas diferentes e exigem trabalho manual para serem unidas.</p></div></article>
+        <article class="pain-card"><div class="icon">◉</div><div><h3>Decisão baseada em sensação</h3><p>A empresa tem dados, mas ainda não consegue transformá-los em uma visão clara para decidir.</p></div></article>
+        <article class="pain-card"><div class="icon">⚙</div><div><h3>Processos que poderiam ser automáticos</h3><p>Tarefas previsíveis e repetitivas ainda dependem de alguém executando cada etapa manualmente.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="diagnostic" id="como-trabalho">
+    <div class="container diagnostic-grid">
+      <div>
+        <div class="section-kicker">Consultoria antes do código</div>
+        <h2 class="section-title">Não começo perguntando qual sistema você quer.</h2>
+        <p class="section-lead">Começo entendendo o que está acontecendo no negócio. A tecnologia entra depois, como ferramenta para resolver o problema certo.</p>
+        <a class="btn btn-primary" href="#contato">Tenho um processo para analisar →</a>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-number">1</div><div><h3>Entender o processo</h3><p>Como o trabalho acontece hoje, quem participa e onde estão as dependências.</p></div></div>
+        <div class="step"><div class="step-number">2</div><div><h3>Identificar desperdícios</h3><p>Tempo perdido, retrabalho, erros, gargalos e informação difícil de acessar.</p></div></div>
+        <div class="step"><div class="step-number">3</div><div><h3>Desenhar a solução</h3><p>Automação, integração, dashboard, IA ou sistema — somente o que fizer sentido.</p></div></div>
+        <div class="step"><div class="step-number">4</div><div><h3>Medir o resultado</h3><p>A solução precisa reduzir esforço, melhorar informação ou gerar eficiência mensurável.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="solucoes">
+    <div class="container">
+      <div class="section-kicker">Capacidade técnica a serviço do negócio</div>
+      <h2 class="section-title">A solução muda. O objetivo é sempre o mesmo: resultado.</h2>
+      <p class="section-lead">Não vendo tecnologia pela tecnologia. Escolho a ferramenta conforme a dor, o contexto e o retorno esperado.</p>
+      <div class="solutions-grid">
+        <article class="solution-card"><div class="number">01</div><h3>Automação de processos</h3><p>Redução de tarefas repetitivas, conferências manuais, geração de arquivos, integrações e rotinas operacionais.</p><div class="result">Resultado: mais tempo para a equipe.</div></article>
+        <article class="solution-card"><div class="number">02</div><h3>Dados e indicadores</h3><p>Organização de dados espalhados para transformar informação operacional em visão de gestão e decisão.</p><div class="result">Resultado: menos achismo.</div></article>
+        <article class="solution-card"><div class="number">03</div><h3>Inteligência Artificial</h3><p>Aplicação prática de IA em tarefas, documentos, classificação, atendimento, análise e ganho de produtividade.</p><div class="result">Resultado: capacidade ampliada.</div></article>
+        <article class="solution-card"><div class="number">04</div><h3>Sistemas e integrações</h3><p>Quando o problema exige software, APIs, banco de dados ou uma solução personalizada, desenvolvo o necessário.</p><div class="result">Resultado: processo conectado.</div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cases" id="experiencia">
+    <div class="container">
+      <div class="section-kicker">Experiência prática</div>
+      <h2 class="section-title">Problemas que tecnologia consegue transformar.</h2>
+      <p class="section-lead">Alguns exemplos do tipo de desafio que já faz parte do meu trabalho técnico e analítico.</p>
+      <div class="cases-grid">
+        <article class="case-card"><span class="label">AUTOMAÇÃO</span><h3>Processos manuais e recorrentes</h3><p>Rotinas que dependiam de execução humana passaram a ter coleta, processamento e entrega automatizados.</p><ul><li>Menos operação repetitiva</li><li>Redução de falhas manuais</li><li>Informação entregue com mais velocidade</li></ul></article>
+        <article class="case-card"><span class="label">DADOS</span><h3>Informação dispersa para decisão</h3><p>Dados de diferentes fontes foram organizados para gerar indicadores claros e uma leitura mais rápida do cenário.</p><ul><li>Visão consolidada</li><li>Indicadores acessíveis</li><li>Decisão baseada em evidência</li></ul></article>
+        <article class="case-card"><span class="label">INTEGRAÇÃO</span><h3>Sistemas que precisam conversar</h3><p>Integração entre bancos, arquivos, APIs e aplicações para reduzir duplicidade e eliminar etapas intermediárias.</p><ul><li>Fluxo mais simples</li><li>Menos retrabalho</li><li>Dados mais consistentes</li></ul></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre">
+    <div class="container about-grid">
+      <div class="about-photo"><img src="images/foto.jpeg" alt="Mauro Ramires, consultor de tecnologia" /></div>
+      <div class="about-copy">
+        <div class="section-kicker">Quem está por trás das soluções</div>
+        <h2 class="section-title">Tecnologia é minha ferramenta. Negócio é o contexto.</h2>
+        <p>Sou <strong>Mauro Ramires</strong>, profissional de tecnologia com experiência em desenvolvimento de sistemas, bancos de dados, automação e Business Intelligence.</p>
+        <p>Durante anos, meu trabalho esteve concentrado em construir software. Hoje, minha abordagem é mais ampla: <strong>entender primeiro o problema empresarial e só depois decidir qual tecnologia deve ser usada.</strong></p>
+        <p>Isso permite conversar tanto com quem vive a operação quanto com quem precisa tomar decisões — traduzindo necessidades de negócio em soluções técnicas viáveis.</p>
+        <div class="skills">
+          <span>Automação</span><span>Python</span><span>SQL</span><span>Oracle</span><span>SQL Server</span><span>APIs</span><span>BI</span><span>Qlik Sense</span><span>Inteligência Artificial</span><span>Desenvolvimento Web</span>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Services Section -->
-    <section id="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>Serviços</h2>
-            </div>
-            
-            <div class="services-container">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3>Desenvolvimento de Sistemas</h3>
-                    <p>Soluções personalizadas e escaláveis para desafios empresariais complexos.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <h3>APIs & Integrações</h3>
-                    <p>Integração entre sistemas e desenvolvimento de APIs REST robustas.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3>Automação de Processos</h3>
-                    <p>RPA e automação inteligente para otimizar operações e reduzir custos.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Dashboards & BI</h3>
-                    <p>Visualização de dados e dashboards interativos para tomada de decisão.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <h3>Consultoria Tecnológica</h3>
-                    <p>Otimização de performance, arquitetura de sistemas e estratégia tech.</p>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3>DevOps & Infraestrutura</h3>
-                    <p>Implementação de pipelines CI/CD, containerização e cloud.</p>
-                </div>
-            </div>
+  <section class="cta-section" id="contato">
+    <div class="container">
+      <div class="cta-box">
+        <div class="section-kicker">Sem compromisso com uma tecnologia específica</div>
+        <h2>Tem alguma coisa na sua empresa que você pensa: “não era para ainda fazermos isso desse jeito”?</h2>
+        <p>Me conte o processo. Antes de falar em orçamento ou sistema, quero entender onde está o problema e se existe uma forma mais inteligente de resolvê-lo.</p>
+        <div class="actions" style="justify-content:center;margin-bottom:0">
+          <a class="btn btn-primary" href="https://www.instagram.com/mauroiadev/" target="_blank" rel="noopener">Falar pelo Instagram →</a>
+          <a class="btn btn-secondary" href="https://br.linkedin.com/in/mauroramires" target="_blank" rel="noopener">Ver meu LinkedIn</a>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
+</main>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <div class="section-title">
-                <h2>Projetos</h2>
-            </div>
-            
-            <div class="projects-container">
-                <div class="project-card">
-                    <div class="project-image" style="background-image: url('images/card1.png');"></div>
-                    <div class="project-content">
-                        <h3>Sistema de Automação Corporativa</h3>
-                        <p>Solução completa para automação de processos empresariais com integração de múltiplas plataformas.</p>
-                        <div class="project-tags">
-                            <span class="project-tag">Python</span>
-                            <span class="project-tag">APIs</span>
-                            <span class="project-tag">Automação</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image" style="background-image: url('images/card2.png');"></div>
-                    <div class="project-content">
-                        <h3>Plataforma de Análise de Dados</h3>
-                        <p>Dashboard interativo para análise de dados corporativos com visualizações em tempo real.</p>
-                        <div class="project-tags">
-                            <span class="project-tag">Qlik Sense</span>
-                            <span class="project-tag">SQL Server</span>
-                            <span class="project-tag">JavaScript</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image" style="background-image: url('images/card3.png');"></div>
-                    <div class="project-content">
-                        <h3>Sistema de Integração de APIs</h3>
-                        <p>Arquitetura microserviços para integração de múltiplas APIs com alta disponibilidade.</p>
-                        <div class="project-tags">
-                            <span class="project-tag">Node.js</span>
-                            <span class="project-tag">Docker</span>
-                            <span class="project-tag">Kubernetes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Contato</h2>
-            </div>
-            
-            <div class="contact-container">
-                <div class="contact-form">
-                    <div class="contact-cta">
-                        <h3>Entre em Contato comigo agora!</h3>
-                        <p>Me envie uma mensagem e eu retorno o mais rápido possível.</p>
-                        <a class="submit-btn whatsapp-btn" href="https://wa.me/5567992886513?text=Olá!%20Vim%20do%20seu%20portfólio%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-whatsapp"></i>
-                            whatsapp
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <p>mauroramirescg@gmail.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                            <p>(67) 99288-6513</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <p>Campo Grande - MS</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://www.linkedin.com/in/mauroramires/" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://github.com/mauroramiressaracho" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.youtube.com/@maurodevops" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://www.instagram.com/mauroramires/" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-instagram"></i>
-                </a>
-            </div>
-            
-            <p class="copyright">© 2023 Mauro Ramires Saracho. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <script src="data/empresas.js"></script>
-    <script>
-        // Inicialização do jQuery
-        $(document).ready(function() {
-            var companiesState = {
-                animationFrameId: null,
-                groupWidth: 0,
-                isDragging: false,
-                lastFrameTime: null,
-                offset: 0,
-                pointerStartX: 0,
-                startOffset: 0
-            };
-
-            function createCompanyCard(company) {
-                var card = $('<article class="company-card"></article>');
-
-                if (company.logo) {
-                    var image = $('<img class="company-logo" loading="lazy">')
-                        .attr('src', company.logo)
-                        .attr('alt', 'Logo da empresa ' + company.name)
-                        .on('error', function() {
-                            card.remove();
-                            updateCompaniesScrollWidth();
-                        });
-
-                    card.append(image);
-                }
-
-                return card;
-            }
-
-            function normalizeCompaniesOffset() {
-                if (!companiesState.groupWidth) {
-                    companiesState.offset = 0;
-                    return;
-                }
-
-                while (companiesState.offset <= -companiesState.groupWidth) {
-                    companiesState.offset += companiesState.groupWidth;
-                }
-
-                while (companiesState.offset > 0) {
-                    companiesState.offset -= companiesState.groupWidth;
-                }
-            }
-
-            function applyCompaniesTransform() {
-                var track = $('#companies-track');
-
-                if (track.hasClass('is-static')) {
-                    track.css('transform', 'translateX(0)');
-                    return;
-                }
-
-                track.css('transform', 'translateX(' + companiesState.offset + 'px)');
-            }
-
-            function updateCompaniesScrollWidth() {
-                var track = $('#companies-track');
-                var firstGroup = track.find('.companies-group').first();
-
-                if (!firstGroup.length || track.hasClass('is-static')) {
-                    companiesState.groupWidth = 0;
-                    companiesState.offset = 0;
-                    applyCompaniesTransform();
-                    return;
-                }
-
-                var trackGap = parseFloat(track.css('gap')) || 0;
-                companiesState.groupWidth = firstGroup.outerWidth() + trackGap;
-                normalizeCompaniesOffset();
-                applyCompaniesTransform();
-            }
-
-            function startCompaniesAnimation() {
-                if (companiesState.animationFrameId) {
-                    cancelAnimationFrame(companiesState.animationFrameId);
-                }
-
-                companiesState.lastFrameTime = null;
-
-                function step(timestamp) {
-                    if (companiesState.lastFrameTime === null) {
-                        companiesState.lastFrameTime = timestamp;
-                    }
-
-                    var elapsed = timestamp - companiesState.lastFrameTime;
-                    companiesState.lastFrameTime = timestamp;
-
-                    if (!companiesState.isDragging && companiesState.groupWidth) {
-                        companiesState.offset -= elapsed * 0.06;
-                        normalizeCompaniesOffset();
-                        applyCompaniesTransform();
-                    }
-
-                    companiesState.animationFrameId = requestAnimationFrame(step);
-                }
-
-                companiesState.animationFrameId = requestAnimationFrame(step);
-            }
-
-            function getPointerClientX(event) {
-                var originalEvent = event.originalEvent || event;
-
-                if (originalEvent.touches && originalEvent.touches.length) {
-                    return originalEvent.touches[0].clientX;
-                }
-
-                if (originalEvent.changedTouches && originalEvent.changedTouches.length) {
-                    return originalEvent.changedTouches[0].clientX;
-                }
-
-                return originalEvent.clientX;
-            }
-
-            function startCompaniesDrag(event) {
-                var carousel = $('.companies-carousel');
-                var track = $('#companies-track');
-
-                if (track.hasClass('is-static') || !companiesState.groupWidth) {
-                    return;
-                }
-
-                if (event.type === 'mousedown' && event.which !== 1) {
-                    return;
-                }
-
-                companiesState.isDragging = true;
-                companiesState.pointerStartX = getPointerClientX(event);
-                companiesState.startOffset = companiesState.offset;
-                companiesState.lastFrameTime = null;
-
-                carousel.addClass('is-dragging');
-
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-            }
-
-            function moveCompaniesDrag(event) {
-                if (!companiesState.isDragging) {
-                    return;
-                }
-
-                var currentX = getPointerClientX(event);
-
-                if (typeof currentX !== 'number') {
-                    return;
-                }
-
-                companiesState.offset = companiesState.startOffset + (currentX - companiesState.pointerStartX);
-                normalizeCompaniesOffset();
-                applyCompaniesTransform();
-
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-            }
-
-            function endCompaniesDrag() {
-                if (!companiesState.isDragging) {
-                    return;
-                }
-
-                companiesState.isDragging = false;
-                companiesState.lastFrameTime = null;
-                $('.companies-carousel').removeClass('is-dragging');
-            }
-
-            function renderCompaniesCarousel() {
-                var companies = Array.isArray(window.portfolioCompanies)
-                    ? window.portfolioCompanies.filter(function(company) {
-                        return company && company.logo;
-                    })
-                    : [];
-
-                var track = $('#companies-track');
-                var carousel = $('.companies-carousel');
-                var emptyState = $('#companies-empty');
-
-                track.empty().removeClass('is-static');
-
-                if (!companies.length) {
-                    carousel.hide();
-                    emptyState.removeAttr('hidden');
-                    return;
-                }
-
-                emptyState.attr('hidden', 'hidden');
-                carousel.show();
-
-                var firstGroup = $('<div class="companies-group"></div>');
-                companies.forEach(function(company) {
-                    firstGroup.append(createCompanyCard(company));
-                });
-                track.append(firstGroup);
-
-                if (companies.length > 1) {
-                    var secondGroup = $('<div class="companies-group" aria-hidden="true"></div>');
-                    companies.forEach(function(company) {
-                        secondGroup.append(createCompanyCard(company));
-                    });
-                    track.append(secondGroup);
-                } else {
-                    track.addClass('is-static');
-                }
-
-                updateCompaniesScrollWidth();
-            }
-
-            // Efeito de cursor luminoso
-            $(document).on('mousemove', function(e) {
-                $('.cursor-glow').css({
-                    'left': e.clientX + 'px',
-                    'top': e.clientY + 'px'
-                });
-            });
-            
-            // Header scroll effect
-            $(window).on('scroll', function() {
-                if ($(window).scrollTop() > 50) {
-                    $('#header').addClass('scrolled');
-                } else {
-                    $('#header').removeClass('scrolled');
-                }
-            });
-            
-            // Menu mobile toggle
-            $('#hamburger').on('click', function() {
-                $('#nav-menu').toggleClass('active');
-                $(this).find('i').toggleClass('fa-bars fa-times');
-            });
-            
-            // Fechar menu ao clicar em um link
-            $('.nav-menu a').on('click', function() {
-                $('#nav-menu').removeClass('active');
-                $('#hamburger').find('i').removeClass('fa-times').addClass('fa-bars');
-            });
-            
-            // Animação das barras de habilidade ao scroll
-            function animateSkillBars() {
-                $('.skill-level-bar').each(function() {
-                    var elementPos = $(this).offset().top;
-                    var topOfWindow = $(window).scrollTop();
-                    var windowHeight = $(window).height();
-                    var level = $(this).data('level');
-                    
-                    if (elementPos < topOfWindow + windowHeight - 50) {
-                        $(this).css('width', level + '%');
-                    }
-                });
-            }
-            
-            // Inicializar barras de habilidade
-            animateSkillBars();
-            $(window).on('scroll', animateSkillBars);
-            $(window).on('resize', updateCompaniesScrollWidth);
-
-            renderCompaniesCarousel();
-            startCompaniesAnimation();
-
-            $('.companies-carousel').on('mousedown touchstart', startCompaniesDrag);
-            $(document).on('mousemove touchmove', moveCompaniesDrag);
-            $(document).on('mouseup touchend touchcancel', endCompaniesDrag);
-            
-            // Smooth scroll para links internos
-            $('a[href^="#"]').on('click', function(e) {
-                e.preventDefault();
-                var target = $(this).attr('href');
-                
-                if (target === '#') return;
-                
-                $('html, body').animate({
-                    scrollTop: $(target).offset().top
-                }, 800);
-            });
-            
-            // Efeito de hover nos cards de projeto
-            $('.project-card').on('mouseenter', function() {
-                $(this).find('.project-image').css({
-                    'transform': 'scale(1.1)',
-                    'transition': 'transform 0.5s ease'
-                });
-            }).on('mouseleave', function() {
-                $(this).find('.project-image').css({
-                    'transform': 'scale(1)',
-                    'transition': 'transform 0.5s ease'
-                });
-            });
-            
-            // Efeito de rotação nos botões
-            $('.cta-button, .submit-btn').on('mouseenter', function() {
-                $(this).css('transform', 'translateY(-5px) rotate(1deg)');
-            }).on('mouseleave', function() {
-                $(this).css('transform', 'translateY(0) rotate(0)');
-            });
-            
-            // Envio do formulário de contato
-            $('#contactForm').on('submit', function(e) {
-                e.preventDefault();
-                
-                // Aqui normalmente enviaria para um servidor
-                // Por enquanto, apenas mostra uma mensagem
-                alert('Mensagem enviada com sucesso! Entrarei em contato em breve.');
-                $(this).trigger('reset');
-            });
-            
-            // Efeito de partículas
-            function createParticles() {
-                const particlesContainer = $('#particles-js');
-                const particleCount = 50;
-                
-                for (let i = 0; i < particleCount; i++) {
-                    const particle = $('<div class="particle"></div>');
-                    
-                    // Posição aleatória
-                    const posX = Math.random() * 100;
-                    const posY = Math.random() * 100;
-                    
-                    // Tamanho aleatório
-                    const size = Math.random() * 3 + 1;
-                    
-                    // Cor aleatória (entre as cores do tema)
-                    const colors = ['#00f3ff', '#9d00ff', '#ff00aa'];
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    // Atraso aleatório para animação
-                    const delay = Math.random() * 5;
-                    
-                    particle.css({
-                        'position': 'absolute',
-                        'left': posX + '%',
-                        'top': posY + '%',
-                        'width': size + 'px',
-                        'height': size + 'px',
-                        'background-color': color,
-                        'border-radius': '50%',
-                        'opacity': Math.random() * 0.5 + 0.1,
-                        'animation': `float ${Math.random() * 20 + 10}s infinite linear`,
-                        'animation-delay': delay + 's'
-                    });
-                    
-                    particlesContainer.append(particle);
-                }
-            }
-            
-            // Inicializar partículas
-            createParticles();
-            
-            // Efeito de digitação no título (simulado)
-            function typeWriterEffect() {
-                const title = "Mauro Ramires Saracho";
-                const element = $('.home-content h1 span');
-                let i = 0;
-                
-                // Limpar texto atual
-                element.text('');
-                
-                // Efeito de digitação
-                function typeChar() {
-                    if (i < title.length) {
-                        element.text(element.text() + title.charAt(i));
-                        i++;
-                        setTimeout(typeChar, 100);
-                    }
-                }
-                
-                // Iniciar após um pequeno atraso
-                setTimeout(typeChar, 1000);
-            }
-            
-            // Iniciar efeito de digitação se estiver na seção home
-            if ($(window).scrollTop() === 0) {
-                setTimeout(typeWriterEffect, 500);
-            }
-            
-            // Efeito de interação na foto
-        });
-    </script>
+<footer>
+  <div class="container footer-grid">
+    <div>© 2026 Mauro Ramires. Tecnologia aplicada a problemas reais de negócio.</div>
+    <div class="socials"><a href="https://www.instagram.com/mauroiadev/" target="_blank" rel="noopener">Instagram</a><a href="https://br.linkedin.com/in/mauroramires" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/mauroramiressaracho" target="_blank" rel="noopener">GitHub</a></div>
+  </div>
+</footer>
 </body>
 </html>
